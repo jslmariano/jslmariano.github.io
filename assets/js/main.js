@@ -20,17 +20,12 @@ MapNinja.prototype = {
     	if (icon_helper) {
     		icon = this.iconHelper(icon);
     	}
-        return new google.maps.Marker({
-            position: position,
-            title: title,
-            icon: icon
-        });
 
-        return new Marker({
+        return new mapIcons.Marker({
             position: position,
             title: title,
 			icon: {
-				path: SQUARE,
+				path: mapIcons.shapes.SQUARE,
 				fillColor: '#00CCBB',
 				fillOpacity: 1,
 				strokeColor: '',
