@@ -9,6 +9,10 @@ MapNinja.prototype = {
         zoom: 1,
         center: new google.maps.LatLng(0, 0)
     },
+    icons : {
+        man : "",
+        restaurant : "",
+    },
     init: function() {
         this.map = new google.maps.Map(document.getElementById(this.map_id), this.options);
         this.markerGroups = new google.maps.MVCObject();
@@ -20,12 +24,17 @@ MapNinja.prototype = {
     	if (icon_helper) {
     		icon = this.iconHelper(icon);
     	}
+        return new google.maps.Marker({
+            position: position,
+            title: title,
+            icon: icon
+        });
 
-        return new mapIcons.Marker({
+        return new Marker({
             position: position,
             title: title,
 			icon: {
-				path: mapIcons.shapes.SQUARE,
+				path: SQUARE,
 				fillColor: '#00CCBB',
 				fillOpacity: 1,
 				strokeColor: '',
@@ -58,7 +67,8 @@ function loadMap() {
             		mapninja.randLatLng(),
             		this.value,
             		// this.value.substring(0, 1).toUpperCase(),
-            		'restaurant',
+            		// 'restaurant',
+                    'http://maps.google.com/mapfiles/ms/icons/restaurant.png',
             		false
         		)
         	);
