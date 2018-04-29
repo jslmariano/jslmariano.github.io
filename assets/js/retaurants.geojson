@@ -14,5 +14,19 @@
 			"title": "Golden Cowrie",
 			"marker-size": "small"
 		}
+	},{
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [20.3288, 123.9025]
+		},
+		"properties": {
+			"bread": true,
+			"pasta": true,
+			"meat": false,
+			"description": "Bread dining, Pasta",
+			"title": "Golden Cowrie",
+			"marker-size": "small"
+		}
 	}]
 }
