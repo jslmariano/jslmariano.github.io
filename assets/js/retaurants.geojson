@@ -4,7 +4,7 @@
 		"type": "Restaurant",
 		"geometry": {
 			"type": "Point",
-			"coordinates": [-100.324644, 42.913045]
+			"coordinates": [10.324644, 42.913045]
 		},
 		"properties": {
 			"bread": true,
