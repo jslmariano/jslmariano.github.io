@@ -14,18 +14,144 @@
 			"title": "Golden Cowrie",
 			"marker-size": "small"
 		}
-	},{
+	}, {
 		"type": "Restaurant",
 		"geometry": {
 			"type": "Point",
-			"coordinates": [10.32603, 123.9051631]
+			"coordinates": [-122.342876, 43.063217]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": true,
+			"description": "Meat dining",
+			"title": "Claude Lewis Sno-Park-USFS",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.037881, 42.879145]
 		},
 		"properties": {
 			"bread": true,
-			"pasta": true,
+			"pasta": false,
 			"meat": false,
-			"description": "Bread dining, Pasta",
-			"title": "Golden Cowrie",
+			"description": "Bread dining",
+			"title": "Lost Creek",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.330322, 43.056641]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": true,
+			"description": "Meat dining",
+			"title": "Hamaker",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.337174, 42.877807]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": true,
+			"description": "Meat dining",
+			"title": "Huckleberry Mountain",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.463867, 42.889648]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": true,
+			"description": "Meat dining",
+			"title": "Natural Bridge -USFS",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.433105, 42.919678]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": false,
+			"description": "",
+			"title": "Farewell Bend",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-121.924772, 42.884588]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": true,
+			"description": "Meat dining",
+			"title": "Scott Creek",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.324644, 42.913045]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": true,
+			"description": "Meat dining",
+			"title": "Thousand Springs Sno-Park-USFS",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.45, 42.9102777778]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": true,
+			"description": "Meat dining",
+			"title": "Union Creek",
+			"marker-size": "small"
+		}
+	}, {
+		"type": "Restaurant",
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-122.4353305556, 42.9162388889]
+		},
+		"properties": {
+			"bread": false,
+			"pasta": false,
+			"meat": false,
+			"description": "",
+			"title": "Farewell Bend Campground",
 			"marker-size": "small"
 		}
 	}]
