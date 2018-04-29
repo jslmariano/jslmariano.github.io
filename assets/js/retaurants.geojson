@@ -4,14 +4,14 @@
 		"type": "Restaurant",
 		"geometry": {
 			"type": "Point",
-			"coordinates": [-122.166149, 42.865508]
+			"coordinates": [10.3288, 123.9025]
 		},
 		"properties": {
 			"bread": true,
 			"pasta": true,
 			"meat": false,
 			"description": "Bread dining, Pasta",
-			"title": "Mazama",
+			"title": "Golden Cowrie",
 			"marker-size": "small"
 		}
 	}, {
