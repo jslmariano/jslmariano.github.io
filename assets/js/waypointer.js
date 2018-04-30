@@ -8,48 +8,56 @@ WayPoint.prototype = {
     directionsService: new google.maps.DirectionsService,
     // Create a renderer for directions
     directionsDisplay: [],
+    map: null,
+    setMap: function(map) {
+        this.map = map;
+    },
+    getMap: function() {
+        return this.map;
+    },
     initialize: function() {
-        var bangalore = {
-            lat: 12.97,
-            lng: 77.59
-        };
-        // var map = new google.maps.Map(document.getElementById('map-canvas'), {
-        //   zoom: 12,
-        //   center: bangalore
-        // });
-        var map;
-        map_options = {
-            zoom: 14,
-            // center: {
-            //     lat: 42.9456,
-            //     lng: -122.2
-            // },
-            center: new google.maps.LatLng(10.3180285, 123.8901931)
+        if (this.markerArray.length == 0) {
+            console.log("No directions!");
+            return false;
         }
-        map_document = document.getElementById('map-canvas')
-        map = new google.maps.Map(map_document, map_options);
-        directionsDisplay = new google.maps.DirectionsRenderer({ //bind it to the map.
-            map: map,
+        this.directionsDisplay = new google.maps.DirectionsRenderer({ //bind it to the map.
+            map: this.map,
             suppressMarkers: true
         });
-        // This event listener calls addMarker() when the map is clicked.
-        google.maps.event.addListener(map, 'click', function(event) {
-            addMarker(event.latLng, map);
-            calculateAndDisplayRoute();
-        });
-        //add the first marker
-        markerArray[0] = new MarkerWithLabel({
-            position: bangalore,
-            map: map,
-            animation: google.maps.Animation.DROP, //just for fun
-            labelContent: "",
-            labelClass: "marker-label"
+        var ako = this;
+        // This event listener calls setOrigin() when the map is clicked.
+        this.waypoint_listener = google.maps.event.addListener(this.map, 'click', function(event){
+            ako.setOrigin(event.latLng, ako.map);
+            ako.calculateAndDisplayRoute();
         });
     },
-    addMarker: function(location, map) {
-        markerArray[1] = new MarkerWithLabel({
+    dropped: function(event) {
+        this.setOrigin(event.latLng, this.map);
+        this.calculateAndDisplayRoute();
+    },
+    destroy: function() {
+        google.maps.event.removeListener(this.waypoint_listener);
+        this.directionsDisplay.setMap(null);
+        this.markerArray[1].setMap(null);
+    },
+    setDestination: function(marker) {
+        //add the first marker
+        this.markerArray[0] = marker;
+        // this.markerArray[0] = new MarkerWithLabel({
+        //     position: position,
+        //     map: this.map,
+        //     animation: google.maps.Animation.DROP, //just for fun
+        //     labelContent: "",
+        //     labelClass: "marker-label"
+        // });
+    },
+    setOrigin: function(location) {
+        if (this.markerArray.length >= 2) {
+            this.markerArray[1].setMap(null);
+        }
+        this.markerArray[1] = new MarkerWithLabel({
             position: location,
-            map: map,
+            map: this.map,
             animation: google.maps.Animation.DROP, //just for fun
             labelContent: "",
             labelClass: "marker-label"
@@ -58,15 +66,16 @@ WayPoint.prototype = {
     calculateAndDisplayRoute: function() {
         // Retrieve the start and end locations and create a DirectionsRequest using
         // WALKING directions.
-        directionsService.route({
-            origin: markerArray[0].getPosition(),
-            destination: markerArray[markerArray.length - 1].getPosition(),
+        var ako = this;
+        ako.directionsService.route({
+            origin: ako.markerArray[0].getPosition(),
+            destination: ako.markerArray[ako.markerArray.length - 1].getPosition(),
             travelMode: google.maps.TravelMode.WALKING
         }, function(response, status) {
             if (status === google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
-                route = directionsDisplay.getDirections().routes[0];
-                markerArray[1].set('labelContent', route.legs[0].distance.value / 1000)
+                ako.directionsDisplay.setDirections(response);
+                route = ako.directionsDisplay.getDirections().routes[0];
+                ako.markerArray[1].set('labelContent', route.legs[0].distance.value / 1000)
             } else {
                 window.alert('Directions request failed due to ' + status);
             }

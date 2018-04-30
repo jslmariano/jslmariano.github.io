@@ -145,4 +145,15 @@ MapNinja.prototype = {
         if (this.filters[id_val]) this.filters[id_val] = false
         else this.filters[id_val] = true
     },
+    get_active_marker: function(markers){
+        active_marker = false;
+        if (markers.length) {
+            jQuery.each(markers, function(){
+                if (this.infowindow.getMap()) {
+                    active_marker = this;
+                }
+            });
+        }
+        return active_marker;
+    },
 }
