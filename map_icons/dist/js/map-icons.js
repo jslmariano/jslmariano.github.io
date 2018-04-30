@@ -138,6 +138,9 @@ var mapIcons = {};
             div.style.display = 'block';
             div.style.left = (position.x - (div.offsetWidth / 2)) + 'px';
             div.style.top = (position.y - div.offsetHeight) + 'px';
+            if (!this.marker.getVisible()) {
+                jQuery(this.div).hide();
+            }
         }
     }
 

@@ -60,12 +60,15 @@
 <body>
     <div class="container fill">
         <div class="row fill">
-            <div class="col-xs-3 col-sm-3 col-md-3 pull-left">
+            <div class="col-xs-12 col-sm-3 col-md-3 pull-left">
                 <h4>
                     Control Panel
                 </h4>
-                <div class="form-check">
-                    <input class="form-check-input" data-icon="restaurants" id="defaultCheck1" type="checkbox" value="restaurants" data-json="https://raw.githubusercontent.com/jslmariano/jslmariano.github.io/master/assets/js/restaurants.geojson?g13123g">
+                <h6>
+                	Please be advised that this is for demo purpose only
+                </h6>
+                <div class="form-check col-xs-6 col-sm-12 col-md-12">
+                    <input class="form-check-input" data-icon="restaurants" id="defaultCheck1" type="checkbox" name="restaurants" value="restaurants" data-json="https://raw.githubusercontent.com/jslmariano/jslmariano.github.io/master/assets/js/restaurants.geojson?g13123g">
                         <label class="form-check-label" for="defaultCheck1">
                             restaurants
                         </label>
@@ -100,15 +103,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-check">
+                <div class="form-check col-xs-6 col-sm-12 col-md-12">
                     <input class="form-check-input" data-icon="male" data-random="true" id="defaultCheck2" type="checkbox" value="people_density">
                         <label class="form-check-label" for="defaultCheck2">
-                            people density
+                            people density (random)
                         </label>
                     </input>
                 </div>
             </div>
-            <div class="col-xs-9 col-sm-9 col-md-9 pull-right fill">
+            <div class="col-xs-12 col-sm-9 col-md-9 pull-right fill">
                 <div id="map-canvas">
                 </div>
             </div>

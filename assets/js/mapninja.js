@@ -1,4 +1,3 @@
-
 function MapNinja(map_id) {
     this.map_id = map_id;
 }
@@ -26,7 +25,7 @@ MapNinja.prototype = {
         return new google.maps.LatLng(((Math.random() * 17000 - 8500) / 100), ((Math.random() * 36000 - 18000) / 100));
     },
     createMarker: function(position, title, properties, group_title) {
-         var marker = new mapIcons.Marker({
+        var marker = new mapIcons.Marker({
             map: this.map,
             position: position,
             title: title,
@@ -41,8 +40,16 @@ MapNinja.prototype = {
             properties,
             map_icon_label: '<span class="map-icon map-icon-' + group_title + '"></span>'
         });
-         console.log(marker);
-         return marker;
+        // console.log(marker);
+        return marker;
+    },
+    createInfoWindow: function(title, content, width = 400) {
+        var contentString = '<div class="info-window">' + '<h3>' + title + '</h3>' + '<div class="info-content">' + '<p>' + content + '</p>' + '</div>' + '</div>';
+        var infoWindow = new google.maps.InfoWindow({
+            content: contentString,
+            maxWidth: width
+        });
+        return infoWindow;
     },
     makeLatLng: function(lt, lg) {
         return new google.maps.LatLng(lt, lg);
@@ -97,7 +104,7 @@ MapNinja.prototype = {
         return this.createMarker(location, text.toString(), null, 'male');
         // return marker;
     },
-    get_set_options: function(){
+    get_set_options: function() {
         ret_array = []
         for (option in this.filters) {
             if (this.filters[option]) {
@@ -106,11 +113,16 @@ MapNinja.prototype = {
         }
         return ret_array;
     },
-    filter_markers: function(){
+    filter_markers: function(markers = null) {
         set_filters = this.get_set_options()
         // for each marker, check to see if all required options are set
-        for (i = 0; i < this.markers.length; i++) {
-            marker = this.markers[i];
+        if (markers != null) {
+            markers = markers;
+        } else {
+            markers = this.markers;
+        }
+        for (i = 0; i < markers.length; i++) {
+            marker = markers[i];
             // start the filter check assuming the marker will be displayed
             // if any of the required features are missing, set 'keep' to false
             // to discard this marker
@@ -120,10 +132,16 @@ MapNinja.prototype = {
                     keep = false;
                 }
             }
-            marker.setVisible(keep)
+            marker.setVisible(keep);
+            if (keep) {
+                jQuery(marker.MarkerLabel.div).show();
+            } else {
+                jQuery(marker.MarkerLabel.div).hide();
+                marker.infowindow.close();
+            }
         }
     },
-    map_filter: function(id_val){
+    map_filter: function(id_val) {
         if (this.filters[id_val]) this.filters[id_val] = false
         else this.filters[id_val] = true
     },
