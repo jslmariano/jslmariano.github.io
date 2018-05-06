@@ -14,7 +14,7 @@ MapNinja.prototype = {
     },
     options: {
         zoom: 14,
-        // 10.3180285,123.8901931,14z
+        // 10.3180285,123.8901931,14z //Cebu!
         center: new google.maps.LatLng(10.3180285, 123.8901931)
     },
     init: function() {
@@ -39,6 +39,32 @@ MapNinja.prototype = {
             },
             properties,
             map_icon_label: '<span class="map-icon map-icon-' + group_title + '"></span>'
+        });
+        // console.log(marker);
+        return marker;
+    },
+    createSimpleMarker: function(position, title, properties, group_title){
+        marker = new google.maps.Marker({
+            map: this.map,
+            draggable: false,
+            position: position,
+            title: title,
+            extra_sauce: group_title,
+            icon: {
+                path: mapIcons.shapes.MAP_PIN,
+                fillColor: '#00CCBB',
+                fillOpacity: 1,
+                strokeColor: '',
+                strokeWeight: 0
+            },
+            properties,
+            map_icon_label: '<span class="map-icon map-icon-' + group_title + '"></span>'
+        });
+        marker = new google.maps.Marker({
+            position: position,
+            title: title,
+            map: this.map,
+            draggable: true
         });
         // console.log(marker);
         return marker;
@@ -132,28 +158,87 @@ MapNinja.prototype = {
                     keep = false;
                 }
             }
-            marker.setVisible(keep);
-            if (keep) {
-                jQuery(marker.MarkerLabel.div).show();
-            } else {
-                jQuery(marker.MarkerLabel.div).hide();
-                marker.infowindow.close();
-            }
+            this.displayMarker(marker, keep);
         }
     },
     map_filter: function(id_val) {
         if (this.filters[id_val]) this.filters[id_val] = false
         else this.filters[id_val] = true
     },
-    get_active_marker: function(markers){
+    get_active_marker: function(markers) {
         active_marker = false;
         if (markers.length) {
-            jQuery.each(markers, function(){
+            jQuery.each(markers, function() {
                 if (this.infowindow.getMap()) {
                     active_marker = this;
                 }
             });
         }
         return active_marker;
+    },
+    loadDrawer: function() {
+        return this.drawer.createPanel().show();
+    },
+    isMarkerInbound: function(circle, marker){
+        bounds = circle.getBounds();
+        markPosition = marker.position;
+        latLngPos = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+
+        /**
+         * A google.maps.LatLngBounds is a rectangle.
+         * You need a polygon "contains" function.
+         * For a circle this can be reduced to testing whether
+         * the point is less than the radius away from the center.
+         */
+        distanceBetween = (
+            google.maps.geometry.spherical.computeDistanceBetween(
+                marker.getPosition(),
+                circle.getCenter()
+                )
+            <= circle.getRadius()
+            );
+        return distanceBetween;
+        // return bounds.contains(latLngPos);
+    },
+    displayMarker: function(marker, show = true) {
+        marker.setVisible(show);
+        if (show) {
+            if (Object.size(marker.MarkerLabel)) {
+                jQuery(marker.MarkerLabel.div).show();
+            }
+        } else {
+            if (Object.size(marker.MarkerLabel)) {
+                jQuery(marker.MarkerLabel.div).hide();
+            }
+            marker.infowindow.close();
+        }
+    },
+    displayInboundMarkers: function(show = true) {
+
+        if (!Object.size(this.drawer.circles)) {
+            return false;
+        }
+
+        ako = this;
+        circle = this.drawer.circles[0];
+        jQuery.each(this.markers.restaurants, function() {
+            if (ako.isMarkerInbound(circle,this)) {
+                ako.displayMarker(this,show);
+            }
+        });
+    },
+    displayOutboundMarkers: function(show = true) {
+
+        if (!Object.size(this.drawer.circles)) {
+            return false;
+        }
+
+        ako = this;
+        circle = this.drawer.circles[0];
+        jQuery.each(this.markers.restaurants, function() {
+            if (!ako.isMarkerInbound(circle,this)) {
+                ako.displayMarker(this,show);
+            }
+        });
     },
 }
