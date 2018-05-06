@@ -129,3 +129,15 @@ jQuery(document).ready(function() {
     toggleRestaurantsFilter();
     toggleDrawerFilter();
 });
+
+
+/**
+ * TODO:
+ * 1. Add inound, outbound data to be a filter.
+ * 2. Drawer checboxes has to be checked
+ * 3. Try to add clusters and work it with mapicons
+ * 4. incase cluster fails with mapicons, use pure google marer.
+ * 5. add customer_number properties to marers object.
+ * 6. Display customer_number somwhere.
+ * 7. Add ading like feature to modify object properties, like customer "+" & "-"
+ */
