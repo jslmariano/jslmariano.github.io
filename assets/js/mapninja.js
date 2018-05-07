@@ -31,7 +31,7 @@ MapNinja.prototype = {
         // Create the search box and link it to the UI element.
         var input = jQuery('.control-panel').get(0);
         // var searchBox = new google.maps.places.SearchBox(input);
-        this.map.controls[google.maps.ControlPosition.LEFT_CENTER].push(input);
+        this.map.controls[google.maps.ControlPosition.LEFT_TOP].push(input);
     },
     createMarker: function(position, title, properties, group_title) {
         var marker = new mapIcons.Marker({
