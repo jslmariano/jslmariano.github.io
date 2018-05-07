@@ -14,3 +14,24 @@ html, body {
     min-height: 100%;
     height: 100%;
 }
+
+.control-panel {
+    /*background-color: black;*/
+}
+
+.container-fluid {
+    background:url(http://namhah.com/images/1.jpg);
+  margin-top: 100px;
+}
+
+.panel-transparent {
+    background: none;
+}
+
+.panel-transparent .panel-heading{
+    background: rgba(122, 130, 136, 0.2)!important;
+}
+
+.panel-transparent .panel-body{
+    background: rgba(46, 51, 56, 0.2)!important;
+}

@@ -75,6 +75,8 @@ Drawer.prototype = {
 
     	//push the circles onto the array
    	 	ako.circles.push(shape);
+        //reset filters
+        mapninja.calibrateMarkersBoundings(mapninja.drawer.circles[0],mapninja.markers.restaurants);
     },
     createCenterMarker: function(shape){
     	centerMarker = new google.maps.Marker({
@@ -91,6 +93,7 @@ Drawer.prototype = {
 	    marker_dragend = google.maps.event.addListener(centerMarker, 'dragend', function() {
 	        // latLngCenter = new google.maps.LatLng(centerMarker.position.lat(), centerMarker.position.lng());
 	        // bounds = centerMarker.getBounds();
+            mapninja.calibrateMarkersBoundings(mapninja.drawer.circles[0],mapninja.markers.restaurants);
 	    });
 
 	    marker_click = google.maps.event.addListener(centerMarker, 'click', function() {

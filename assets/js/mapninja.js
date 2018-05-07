@@ -10,7 +10,9 @@ MapNinja.prototype = {
     filters: {
         bread: false,
         pasta: false,
-        meat: false
+        meat: false,
+        inbound: true,
+        outbound: true,
     },
     options: {
         zoom: 14,
@@ -20,9 +22,16 @@ MapNinja.prototype = {
     init: function() {
         this.map = new google.maps.Map(document.getElementById(this.map_id), this.options);
         this.markerGroups = new google.maps.MVCObject();
+        this.loadControlPanel();
     },
     randLatLng: function() {
         return new google.maps.LatLng(((Math.random() * 17000 - 8500) / 100), ((Math.random() * 36000 - 18000) / 100));
+    },
+    loadControlPanel: function(){
+        // Create the search box and link it to the UI element.
+        var input = jQuery('.control-panel').get(0);
+        // var searchBox = new google.maps.places.SearchBox(input);
+        this.map.controls[google.maps.ControlPosition.LEFT_CENTER].push(input);
     },
     createMarker: function(position, title, properties, group_title) {
         var marker = new mapIcons.Marker({
@@ -199,6 +208,18 @@ MapNinja.prototype = {
             );
         return distanceBetween;
         // return bounds.contains(latLngPos);
+    },
+    calibrateMarkersBoundings: function(circle, markers){
+        var ako = this;
+        jQuery.each(markers, function(key,marker) {
+            if (ako.isMarkerInbound(circle,marker)) {
+                marker.properties.inbound = false;
+                marker.properties.outbound = true;
+            } else {
+                marker.properties.inbound = true;
+                marker.properties.outbound = false;
+            }
+        });
     },
     displayMarker: function(marker, show = true) {
         marker.setVisible(show);

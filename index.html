@@ -15,7 +15,7 @@
         <!-- Google Maps -->
         <!-- <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA7FYgY7bx9uA3A-V5Yd3kbnHAOvacSTCc">
         </script> -->
-        <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=drawing&extension=.js&key=AIzaSyA7FYgY7bx9uA3A-V5Yd3kbnHAOvacSTCc">
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7FYgY7bx9uA3A-V5Yd3kbnHAOvacSTCc&sensor=false&extension=.js&libraries=drawing,places">
         </script>
         <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
         </script>
@@ -49,97 +49,102 @@
     </head>
 </html>
 <body>
-    <div class="container fill">
-        <div class="row fill">
-            <div class="col-xs-12 col-sm-3 col-md-3 pull-left">
-                <h4>
-                    Control Panel
-                </h4>
-                <h6>
-                	Please be advised that this is for demo purposes only
-                </h6>
-                <div class="form-check col-xs-6 col-sm-12 col-md-12">
-                    <input class="form-check-input" data-icon="restaurants" id="defaultCheck1" type="checkbox" name="restaurants" value="restaurants" data-json="https://raw.githubusercontent.com/jslmariano/jslmariano.github.io/master/assets/js/restaurants.geojson?g13123g">
-                        <label class="form-check-label" for="defaultCheck1">
-                            restaurants
-                        </label>
-                    </input>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form role="form">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="filter[restaurants]" id="meat">
-                                                Meat
-                                            </input>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="filter[restaurants]" id="bread">
-                                                Bread
-                                            </input>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="filter[restaurants]" id="pasta">
-                                                Pasta
-                                            </input>
-                                        </label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-check col-xs-6 col-sm-12 col-md-12">
-                    <input class="form-check-input" data-icon="male" data-random="true" id="defaultCheck2" type="checkbox" value="people_density">
-                        <label class="form-check-label" for="defaultCheck2">
-                            people density (random)
-                        </label>
-                    </input>
-                </div>
-                <div class="form-check col-xs-6 col-sm-12 col-md-12">
-                    <input class="form-check-input" id="defaultCheck3" type="checkbox" name="drop_origin">
-                        <label class="form-check-label" for="defaultCheck3">
-                            Drop origin and get direction
-                        </label>
-                    </input>
-                </div>
-                <div class="form-check col-xs-6 col-sm-12 col-md-12">
-                    <input class="form-check-input" id="defaultCheck4" type="checkbox" name="drawer" value="drawer">
-                        <label class="form-check-label" for="defaultCheck4">
-                            Drawer
-                        </label>
-                    </input>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form role="form">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="filter[drawer]" id="inside">
-                                                Show markers inside
-                                            </input>
-                                        </label>
-                                    </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="filter[drawer]" id="outside">
-                                                Show markers outside
-                                            </input>
-                                        </label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="map-wrapper fill">
+        <div id="map-canvas"></div>
+    </div>
+    <div class="col-xs-3 col-sm-3 col-md-3 container-fluid control-panel">
+        <div class="panel panel-primary panel-transparent">
+            <div class="panel-heading">
+                 <h3 class="panel-title">Control Panel</h3>
+
             </div>
-            <div class="col-xs-12 col-sm-9 col-md-9 pull-right fill">
-                <div id="map-canvas">
+            <div class="panel-body">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <h6>
+                        Please be advised that this is for demo purposes only
+                    </h6>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12 pac-input-wrapper form-group">
+                        <input id="pac-input" class="controls form-control" type="text" placeholder="Search Box"/>
+                    </div>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
+                        <input class="form-check-input" data-icon="restaurants" id="defaultCheck1" type="checkbox" name="restaurants" value="restaurants" data-json="https://raw.githubusercontent.com/jslmariano/jslmariano.github.io/master/assets/js/restaurants.geojson?g13123g">
+                            <label class="form-check-label" for="defaultCheck1">
+                                restaurants
+                            </label>
+                        </input>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form role="form">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="filter[restaurants]" id="meat">
+                                                    Meat
+                                                </input>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="filter[restaurants]" id="bread">
+                                                    Bread
+                                                </input>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="filter[restaurants]" id="pasta">
+                                                    Pasta
+                                                </input>
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
+                        <input class="form-check-input" data-icon="male" data-random="true" id="defaultCheck2" type="checkbox" value="people_density">
+                            <label class="form-check-label" for="defaultCheck2">
+                                people density (random)
+                            </label>
+                        </input>
+                    </div>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
+                        <input class="form-check-input" id="defaultCheck3" type="checkbox" name="drop_origin">
+                            <label class="form-check-label" for="defaultCheck3">
+                                Drop origin and get direction
+                            </label>
+                        </input>
+                    </div>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
+                        <input class="form-check-input" id="defaultCheck4" type="checkbox" name="drawer" value="drawer">
+                            <label class="form-check-label" for="defaultCheck4">
+                                Drawer
+                            </label>
+                        </input>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form role="form">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="filter[drawer]" id="inbound">
+                                                    Inside
+                                                </input>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="filter[drawer]" id="outbound">
+                                                    Outside
+                                                </input>
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
