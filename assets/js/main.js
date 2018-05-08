@@ -85,6 +85,7 @@ function loadMap() {
             mapninja.displayMarker(n, keep);
         });
         toggleOffDropWaypoint();
+        mapninja.clearDisplay();
     });
     jQuery('.drawers').on('change', function() {
         mapninja.resetFilters();
