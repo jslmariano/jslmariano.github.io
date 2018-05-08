@@ -88,10 +88,17 @@ html, body {
     font-size:13px;
 }
 .review-block-wrapper {
+    /* height: 420px; */
+    /* overflow: hidden; */
+    /*     overflow-y: scroll; */
+    /*     overflow-x: scroll; */
+}
+
+.place-detail-wrapper .panel-body {
     height: 420px;
     overflow: hidden;
     overflow-y: scroll;
-    overflow-x: scroll;
+    /*     overflow-x: scroll; */
 }
 
 .img-rounded {
