@@ -28,8 +28,8 @@
         <script src="assets/js/helpers.js" type="text/javascript">
         </script>
         <!-- from here:
-		http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.1.9/src/markerwithlabel_packed.js
-		-->
+        http://google-maps-utility-library-v3.googlecode.com/svn/tags/markerwithlabel/1.1.9/src/markerwithlabel_packed.js
+        -->
         <script src="assets/js/markerwithlabel_packed.js" type="text/javascript">
         </script>
         <script src="assets/js/waypointer.js" type="text/javascript">
@@ -50,99 +50,161 @@
 </html>
 <body>
     <div class="map-wrapper fill">
-        <div id="map-canvas"></div>
+        <div id="map-canvas">
+        </div>
     </div>
-    <div class="col-xs-3 col-sm-3 col-md-3 container-fluid control-panel">
+    <div class="col-xs-6 col-sm-4 col-md-3 container-fluid control-panel">
         <div class="panel panel-primary panel-transparent">
             <div class="panel-heading">
-                 <h3 class="panel-title">Control Panel</h3>
-
+                <h3 class="panel-title">
+                    Control Panel
+                </h3>
             </div>
             <div class="panel-body">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <h6>
+                <div class="row">
+                    <h6 class="col-md-12">
                         Please be advised that this is for demo purposes only
                     </h6>
                     <div class="form-check col-xs-6 col-sm-12 col-md-12 pac-input-wrapper form-group">
-                        <input id="pac-input" class="controls form-control" type="text" placeholder="Search Box"/>
+                        <input class="controls form-control place-search" placeholder="Search Box" type="text"/>
                     </div>
-                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
-                        <button type="button" class="btn btn-primary btn-xs" data-toggle="button">Single Toggle Button</button>
-                        <input class="form-check-input btn btn-default" data-toggle="button" data-icon="restaurants" id="defaultCheck1" type="checkbox" name="restaurants" value="restaurants" data-json="https://raw.githubusercontent.com/jslmariano/jslmariano.github.io/master/assets/js/restaurants.geojson?g13123g">
-                            <label class="form-check-label" for="defaultCheck1">
-                                restaurants
-                            </label>
-                        </input>
-                        <div class="container">
+                    <div class="form-check col-xs-12 col-sm-12 col-md-12">
+                        <button class="btn btn-default btn-xs restaurants show-markers" data-json="https://raw.githubusercontent.com/jslmariano/jslmariano.github.io/master/assets/js/restaurants.geojson?g13123g" data-toggle="button">
+                            Show Markers
+                        </button>
+                        <div class="restaurant-filter">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <form role="form">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="filter[restaurants]" id="meat">
-                                                    Meat
-                                                </input>
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="filter[restaurants]" id="bread">
-                                                    Bread
-                                                </input>
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="filter[restaurants]" id="pasta">
-                                                    Pasta
-                                                </input>
-                                            </label>
-                                        </div>
-                                    </form>
+                                    <button class="col-md-12 btn btn-info btn-xs" data-filter="restaurants" data-filter-value="meat" data-toggle="button">
+                                        Meat
+                                    </button>
+                                    <button class="col-md-12 btn btn-info btn-xs" data-filter="restaurants" data-filter-value="bread" data-toggle="button">
+                                        Bread
+                                    </button>
+                                    <button class="col-md-12 btn btn-info btn-xs" data-filter="restaurants" data-filter-value="pasta" data-toggle="button">
+                                        Pasta
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
+                    <!-- <div class="form-check col-xs-6 col-sm-12 col-md-12">
                         <input class="form-check-input" data-icon="male" data-random="true" id="defaultCheck2" type="checkbox" value="people_density">
                             <label class="form-check-label" for="defaultCheck2">
                                 people density (random)
                             </label>
                         </input>
+                    </div> -->
+                    <div class="form-check col-xs-12 col-sm-12 col-md-12">
+                        <button class="btn btn-default btn-xs drop_origin" data-toggle="button">
+                            Drop Origin
+                        </button>
                     </div>
-                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
-                        <input class="form-check-input" id="defaultCheck3" type="checkbox" name="drop_origin">
-                            <label class="form-check-label" for="defaultCheck3">
-                                Drop origin and get direction
-                            </label>
-                        </input>
-                    </div>
-                    <div class="form-check col-xs-6 col-sm-12 col-md-12">
-                        <input class="form-check-input" id="defaultCheck4" type="checkbox" name="drawer" value="drawer">
-                            <label class="form-check-label" for="defaultCheck4">
-                                Drawer
-                            </label>
-                        </input>
-                        <div class="container">
+                    <div class="form-check col-xs-12 col-sm-12 col-md-12">
+                        <button class="btn btn-default btn-xs drawers" data-toggle="button">
+                            Draw Circle
+                        </button>
+                        <div class="drawer-filter">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <form role="form">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="filter[drawer]" id="inbound">
-                                                    Inside
-                                                </input>
-                                            </label>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="filter[drawer]" id="outbound">
-                                                    Outside
-                                                </input>
-                                            </label>
-                                        </div>
-                                    </form>
+                                    <button class="col-md-12 btn btn-info btn-xs" data-filter="drawer" data-filter-value="inbound" data-toggle="button">
+                                        Inside
+                                    </button>
+                                    <button class="col-md-12 btn btn-info btn-xs" data-filter="drawer" data-filter-value="outbound" data-toggle="button">
+                                        Outside
+                                    </button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary panel-transparent place-detail-wrapper">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Current Marker
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <h6 class="col-md-12">
+                        Click on the marker to view information here.
+                    </h6>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12 place-detail-status form-group">
+                        <p>
+                            Detail...
+                        </p>
+                    </div>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12 place-detail-status-info form-group">
+                    </div>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12 place-detail-status-info form-group rating-block-wrapper">
+                        <div class="rating-block">
+                            <h4>
+                                Average user rating
+                            </h4>
+                            <h2 class="bold padding-bottom-7">
+                                <span class="rate">4.3</span>
+                                <small>
+                                    / 5
+                                </small>
+                            </h2>
+                            <button aria-label="Left Align" class="btn btn-warning btn-sm" type="button">
+                                <span aria-hidden="true" class="glyphicon glyphicon-star">
+                                </span>
+                            </button>
+                            <button aria-label="Left Align" class="btn btn-warning btn-sm" type="button">
+                                <span aria-hidden="true" class="glyphicon glyphicon-star">
+                                </span>
+                            </button>
+                            <button aria-label="Left Align" class="btn btn-warning btn-sm" type="button">
+                                <span aria-hidden="true" class="glyphicon glyphicon-star">
+                                </span>
+                            </button>
+                            <button aria-label="Left Align" class="btn btn-default btn-grey btn-sm" type="button">
+                                <span aria-hidden="true" class="glyphicon glyphicon-star">
+                                </span>
+                            </button>
+                            <button aria-label="Left Align" class="btn btn-default btn-grey btn-sm" type="button">
+                                <span aria-hidden="true" class="glyphicon glyphicon-star">
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-check col-xs-6 col-sm-12 col-md-12 place-detail-status-info form-group review-block-master-wrapper">
+                        <div class="review-block-wrapper">
+                            <div class="review-block-template hide">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <img src="http://dummyimage.com/60x60/666/ffffff&amp;text=No+Image" class="img-rounded">
+                                        <div class="review-block-name"><a href="#">nktailor</a></div>
+                                        <div class="review-block-date">January 29, 2016<br>1 day ago</div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="review-block-rate">
+                                            <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
+                                              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
+                                              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-warning btn-xs" aria-label="Left Align">
+                                              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
+                                              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default btn-grey btn-xs" aria-label="Left Align">
+                                              <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                        <div class="review-block-title"></div>
+                                        <div class="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy</div>
+                                    </div>
+                                </div>
+                                <hr/>
+                            </div>
+                            <div class="review-block">
                             </div>
                         </div>
                     </div>

@@ -6,8 +6,15 @@ function loadMap() {
     mapninja.waypoint = new WayPoint(mapninja.map);
     mapninja.drawer = new Drawer(mapninja.map);
     mapninja.loadDrawer().hide();
+    mapninja.clearDisplay();
+    /**
+     * Initial toggle
+     */
+    toggleRestaurantsFilter();
+    toggleDrawerFilter();
+    initState();
     // mapninja.createMarkerImage('https://jslmariano.github.io/assets/static_icons/icon-marker-15.jpg');
-    jQuery(':checkbox[data-json]').each(function(i, n) {
+    jQuery('[data-json]').each(function(i, n) {
         var json_url = jQuery(this).data('json');
         var markers = [];
         jQuery.getJSON(json_url, function(result) {
@@ -36,7 +43,7 @@ function loadMap() {
                     } else {
                         this.infowindow.open(mapninja.map, this);
                     }
-                    if (jQuery('[name="drop_origin"]').prop('checked')) {
+                    if (jQuery('.drop_origin').prop('checked')) {
                         mapninja.waypoint.setDestination(this);
                         mapninja.waypoint.calculateAndDisplayRoute();
                     }
@@ -47,87 +54,127 @@ function loadMap() {
         });
     });
     jQuery('[data-random]').on('change', function() {
-        if (this.checked) {
+        if (jQuery(this).prop('checked')) {
             mapninja.initRandomMarker(100);
         } else {
             mapninja.initRandomMarker(0);
         }
     });
-    jQuery('[name="restaurants"]').on('change', function() {
+    /**
+     * Keep up with the change event listeners
+     */
+    jQuery('.restaurants').on('toggle.bs.button.data-api', function() {
+        togglState(jQuery(this), jQuery(this).hasClass('active'));
+    });
+    jQuery('.drop_origin').on('toggle.bs.button.data-api', function() {
+        togglState(jQuery(this), jQuery(this).hasClass('active'));
+    });
+    jQuery('.drawers').on('toggle.bs.button.data-api', function() {
+        togglState(jQuery(this), jQuery(this).hasClass('active'));
+    });
+    jQuery('[data-filter]').on('toggle.bs.button.data-api', function() {
+        togglState(jQuery(this), jQuery(this).hasClass('active'));
+    });
+    /**
+     * Keeping changed events
+     */
+    jQuery('.restaurants').on('change', function() {
         toggleRestaurantsFilter();
-        keep = (this.checked) ? true : false;
+        keep = (jQuery(this).prop('checked')) ? true : false;
         jQuery.each(mapninja.markers.restaurants, function(i, n) {
             mapninja.displayMarker(n, keep);
         });
         toggleOffDropWaypoint();
     });
-    jQuery('[name="drawer"]').on('change', function() {
+    jQuery('.drawers').on('change', function() {
+        mapninja.resetFilters();
         toggleDrawerFilter();
-        if (this.checked) {
+        if (jQuery(this).prop('checked')) {
             mapninja.drawer.show();
         } else {
             mapninja.drawer.hide();
         }
     });
-    jQuery('input[name="filter[restaurants]"]').change(function(e) {
-        mapninja.map_filter(this.id);
+    jQuery('[data-filter="restaurants"]').change(function(e) {
+        mapninja.map_filter(jQuery(this).data('filter-value'));
         mapninja.filter_markers(mapninja.markers.restaurants);
         toggleOffDropWaypoint();
     });
-    jQuery('input[name="filter[drawer]"]').change(function(e) {
+    jQuery('[data-filter="drawer"]').change(function(e) {
         if (!Object.size(mapninja.drawer.circles)) {
             alert("Draw circles first");
             jQuery(this).prop('checked', false);
             return false;
         }
-        mapninja.map_filter(this.id);
+        mapninja.map_filter(jQuery(this).data('filter-value'), !jQuery(this).prop('checked'));
         mapninja.filter_markers(mapninja.markers.restaurants);
     });
-    jQuery('[name="drop_origin"]').on('click', function() {
+    jQuery('.drop_origin').on('change', function() {
         if (active_marker = mapninja.get_active_marker(mapninja.markers.restaurants)) {
-            if (this.checked) {
+            if (jQuery(this).prop('checked')) {
                 mapninja.waypoint.setDestination(active_marker);
                 mapninja.waypoint.initialize();
             } else {
                 mapninja.waypoint.destroy();
             }
         } else {
-            alert('Please select restaurant marker.');
+            alert('Please select a destination marker.');
+            togglState(jQuery(this), false, false);
             return false;
         }
     });
+    jQuery('.place-search').on('places_changed_complete', function() {
+        togglState(jQuery('.show-markers'), true);
+    });
+}
+
+function togglState(el, toggle = true, trigger_callback = true) {
+    if (toggle) {
+        jQuery(el).addClass('active');
+        jQuery(el).attr('checked', true);
+        jQuery(el).prop('checked', true);
+    } else {
+        jQuery(el).removeClass('active');
+        jQuery(el).removeAttr('checked');
+        jQuery(el).prop('checked', false);
+    }
+    jQuery(el).attr('aria-pressed', !jQuery(el).hasClass('active'));
+    if (trigger_callback) {
+        jQuery(el).trigger('change');
+    }
 }
 
 function toggleRestaurantsFilter() {
     syncFilters();
-    if (jQuery('[name="restaurants"]').prop('checked')) {
-        jQuery('[name="filter[restaurants]"]').removeAttr('disabled');
+    if (jQuery('.restaurants').prop('checked')) {
+        jQuery('[data-filter="restaurants"]').removeAttr('disabled');
     } else {
-        jQuery('[name="filter[restaurants]"]').attr('disabled', 'disabled');
+        jQuery('[data-filter="restaurants"]').attr('disabled', 'disabled');
     }
 }
 
 function toggleDrawerFilter() {
     syncFilters();
-    if (jQuery('[name="drawer"]').prop('checked')) {
-        jQuery('[name="filter[drawer]"]').removeAttr('disabled');
+    if (jQuery('.drawers').prop('checked')) {
+        jQuery('[data-filter="drawer"]').removeAttr('disabled');
     } else {
-        jQuery('[name="filter[drawer]"]').attr('disabled', 'disabled');
+        jQuery('[data-filter="drawer"]').attr('disabled', 'disabled');
     }
 }
 
 function toggleOffDropWaypoint() {
     syncFilters();
-    if (jQuery('[name="drop_origin"]').prop('checked')) {
+    if (jQuery('.drop_origin').prop('checked')) {
         mapninja.waypoint.destroy();
-        jQuery('[name="drop_origin"]').prop('checked', false);
+        togglState(jQuery(this), false, false);
     }
 }
 
 function syncFilters() {
-    jQuery('[name^="filter"]').each(function() {
-        if (mapninja.filters.hasOwnProperty(this.id)) {
-            jQuery(this).prop('checked', mapninja.filters[this.id]);
+    jQuery('[data-filter]').each(function() {
+        filter_name = jQuery(this).data('filter-value');
+        if (mapninja.filters.hasOwnProperty(filter_name)) {
+            togglState(jQuery(this), mapninja.filters[filter_name], false, false);
         }
     });
 }
@@ -139,11 +186,13 @@ function filterMarkerProp(markers, prop) {
         }
     });
 }
+
+function initState() {
+    jQuery('.restaurants,.drawers').each(function() {
+        togglState(jQuery(this), false, false);
+    });
+}
 google.maps.event.addDomListener(window, 'load', loadMap);
-jQuery(document).ready(function() {
-    toggleRestaurantsFilter();
-    toggleDrawerFilter();
-});
 /**
  * TODO:
  * 1. Add inound, outbound data to be a filter.

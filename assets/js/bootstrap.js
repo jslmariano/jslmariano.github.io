@@ -242,6 +242,7 @@ if (typeof jQuery === 'undefined') {
       this.$element.attr('aria-pressed', !this.$element.hasClass('active'))
       this.$element.toggleClass('active')
     }
+    this.$element.trigger('toggle.bs.button.data-api');
   }
 
 

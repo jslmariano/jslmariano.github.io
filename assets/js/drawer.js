@@ -77,6 +77,7 @@ Drawer.prototype = {
    	 	ako.circles.push(shape);
         //reset filters
         mapninja.calibrateMarkersBoundings(mapninja.drawer.circles[0],mapninja.markers.restaurants);
+        jQuery('[title="Stop drawing"]').trigger('click');
     },
     createCenterMarker: function(shape){
     	centerMarker = new google.maps.Marker({
