@@ -146,11 +146,11 @@ MapNinja.prototype = {
         rating_block.find('.rate').html(place.rating);
         rate_buttons = rating_block.find('button');
         //reset buttons rate
-        jQuery(rate_buttons).removeClass('btn-warning').addClass('btn-default');
+        jQuery(rate_buttons).removeClass('btn-warning').addClass('btn-grey');
         rates_count = 1;
         jQuery(rate_buttons).each(function() {
-            if (rates_count < parseInt(place.rating)) {
-                jQuery(this).removeClass('btn-default');
+            if (rates_count <= parseInt(place.rating)) {
+                jQuery(this).removeClass('btn-grey');
                 jQuery(this).addClass('btn-warning');
             }
             rates_count++;
@@ -168,7 +168,7 @@ MapNinja.prototype = {
 
             item_rates_count = 1;
             jQuery(item_template.find('.review-block-rate button')).each(function() {
-                if (item_rates_count < parseInt(item.rating)) {
+                if (item_rates_count <= parseInt(item.rating)) {
                     jQuery(this).removeClass('btn-grey');
                     jQuery(this).addClass('btn-warning');
                 }
@@ -181,7 +181,7 @@ MapNinja.prototype = {
     },
     clearDisplay: function() {
         jQuery('.place-detail-status').html('Details...');
-        jQuery('.place-detail-status-info').html();
+        jQuery('.review-block').html('');
         jQuery('.rating-block-wrapper').hide();
         jQuery('.review-block-master-wrapper').hide();
     },
