@@ -5,8 +5,9 @@ function loadMap() {
     mapninja.init();
     mapninja.waypoint = new WayPoint(mapninja.map);
     mapninja.drawer = new Drawer(mapninja.map);
-    mapninja.loadDrawer().hide();
+    mapninja.loadDrawer().show();
     mapninja.clearDisplay();
+    jQuery('[title="Stop drawing"]').trigger('click');
     /**
      * Initial toggle
      */
@@ -126,6 +127,7 @@ function loadMap() {
     });
     jQuery('.place-search').on('places_changed_complete', function() {
         togglState(jQuery('.show-markers'), true);
+        mapninja.toggleClusters();
     });
 }
 

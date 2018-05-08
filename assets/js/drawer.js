@@ -17,10 +17,10 @@ Drawer.prototype = {
       ],
     createPanel: function() {
         var drawingManager = new google.maps.drawing.DrawingManager({
-            drawingMode: google.maps.drawing.OverlayType.MARKER,
+            drawingMode: null,
             drawingControl: true,
             drawingControlOptions: {
-                position: google.maps.ControlPosition.TOP_CENTER,
+                position: google.maps.ControlPosition.BOTTOM_CENTER,
                 drawingModes: this.drawingModes
             },
             markerOptions: {
@@ -52,6 +52,7 @@ Drawer.prototype = {
     	this.drawerPanel.setMap(this.map);
     	this.displayCenterMarker(true);
     	this.displayCircles(true);
+        jQuery('[title="Stop drawing"]').trigger('click');
     	return this;
     },
     hide: function(){
@@ -146,6 +147,18 @@ Drawer.prototype = {
         	for (var key in this.circles) {
         		this.circles[key].setVisible(show);
 			}
+        }
+    },
+    hasCircles: function(){
+        return (!!Object.size(this.circles));
+    },
+    clearCircles: function(){
+        if (this.circles.length) {
+            this.circles[0].setMap(null);
+            this.circles = [];
+        }
+        if (Object.size(this.centerMarker)) {
+            this.centerMarker.setMap(null);
         }
     },
 }

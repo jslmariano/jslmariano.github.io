@@ -5,6 +5,7 @@ MapNinja.prototype = {
     constructor: MapNinja,
     map: null,
     markerGroups: null,
+    markerCluster: null,
     randomMarker: new Array(0),
     markers: [],
     listeners: [],
@@ -17,6 +18,7 @@ MapNinja.prototype = {
     },
     options: {
         zoom: 14,
+        mapTypeControl: false,
         // 10.3180285,123.8901931,14z //Cebu!
         center: new google.maps.LatLng(10.3180285, 123.8901931)
     },
@@ -25,9 +27,27 @@ MapNinja.prototype = {
         search_input: null,
     },
     init: function() {
+        ako = this;
         this.map = new google.maps.Map(document.getElementById(this.map_id), this.options);
         this.markerGroups = new google.maps.MVCObject();
         this.loadControlPanel();
+
+        // this.map.addListener('center_changed', function() {
+        //     ako.mapChangeEvent(ako,this);
+        // });
+        // this.map.addListener('bounds_changed', function() {
+        //     ako.mapChangeEvent(ako,this);
+        // });
+        // this.map.addListener('heading_changed', function() {
+        //     ako.mapChangeEvent(ako,this);
+        // });
+        // this.map.addListener('zoom_changed', function() {
+        //     ako.mapChangeEvent(ako,this);
+        // });
+        // this.map.addListener('tilt_changed', function() {
+        //     ako.mapChangeEvent(ako,this);
+        // });
+
     },
     randLatLng: function() {
         return new google.maps.LatLng(((Math.random() * 17000 - 8500) / 100), ((Math.random() * 36000 - 18000) / 100));
@@ -92,9 +112,70 @@ MapNinja.prototype = {
                     bounds.extend(place.geometry.location);
                 }
             });
+
+            if (ako.drawer.hasCircles()) {
+                ako.drawer.clearCircles();
+            }
+            ako.synClusters();
             ako.map.fitBounds(bounds);
             jQuery(ako.control_panel.search_input).trigger('places_changed_complete');
         });
+    },
+    synClusters: function(){
+        var ako = this;
+        if (this.markerCluster == null) {
+            this.clusterMarkers([]);
+        }
+
+        this.markerCluster.clearMarkers();
+        this.markerCluster.new_markers = true;
+        if (Object.size(mapninja.markers['restaurants'])) {
+            jQuery.each(this.markers.restaurants, function(){
+                ako.markerCluster.addMarker(this);
+            });
+        }
+        ako.toggleClusters();
+    },
+    clusterMarkers: function(markers) {
+        this.markerCluster = new MarkerClusterer(this.map, markers, {
+            ignoreHiddenMarkers: true,
+            imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+        });
+        this.markerCluster.onCreateComplete = function(markers){
+            console.log(this,markers);
+            if (!ako.drawer.hasCircles() || ako.markerCluster.new_markers) {
+                ako.markerCluster.new_markers = false;
+                ako.toggleClusters();
+            }
+        };
+    },
+    mapChangeEvent: function(ako ,map_event){
+        if (!Object.size(ako.drawer.circles)) {
+            ako.toggleClusters();
+        }
+    },
+    toggleClusters:function(){
+        if (Object.size(mapninja.markerCluster)) {
+            clusters = mapninja.markerCluster.getClusters();
+            jQuery.each(clusters, function(){
+                this.clusterIcon_.hide();
+            });
+        }
+        if (Object.size(mapninja.markers['restaurants'])) {
+            this.toggleMarkers(mapninja.markers.restaurants);
+        }
+    },
+    toggleMarkers: function(markers, show = true){
+        var ako = this;
+        jQuery.each(markers, function(){
+            this.setMap(ako.map);
+            this.setVisible(true);
+        });
+    },
+    clusterRepaint: function(){
+        if (mapninja.markerCluster) {
+            mapninja.markerCluster.repaint();
+        }
     },
     onMarkerClick: function(marker) {
         this.clearDisplay();
@@ -188,6 +269,9 @@ MapNinja.prototype = {
     clearMarkers: function(key) {
         if (this.markers.hasOwnProperty(key)) {
             markers = this.markers[key];
+        }
+        if (typeof markers == "undefined") {
+            return true;
         }
         // Clear out the old markers.
         markers.forEach(function(marker) {
@@ -382,7 +466,16 @@ MapNinja.prototype = {
                 marker.properties.outbound = false;
             }
         });
+
         this.resetFilters();
+        this.displayOutboundMarkers(false);
+
+        if (this.markerCluster == null) {
+            this.clusterMarkers(mapninja.markers.restaurants);
+        }
+
+        this.clusterRepaint();
+        // this.clusterMarkers(this.markers.restaurants);
     },
     resetFilters: function() {
         for (option in this.filters) {

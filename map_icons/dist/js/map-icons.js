@@ -117,10 +117,13 @@ var mapIcons = {};
 
         // Marker Label onRemove
         labelOnRemove : function () {
-            this.div.parentNode.removeChild(this.div);
-
-            for (var i = 0, I = this.listeners.length; i < I; ++i) {
-                google.maps.event.removeListener(this.listeners[i]);
+            if (this.div.parentNode) {
+                this.div .parentNode.removeChild(this.div);
+            }
+            if (Object.size(this.listeners)) {
+                for (var i = 0, I = this.listeners.length; i < I; ++i) {
+                    google.maps.event.removeListener(this.listeners[i]);
+                }
             }
         },
 
